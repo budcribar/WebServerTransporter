@@ -56,7 +56,7 @@ Finally, insert "app.UseWebServerTransporter();" into the Configure method as fo
             app.UseHttpsRedirection();
             app.UseWebServerTransporter();
 ```
-Download the TransporterServer.exe from https://github.com/budcribar/WebServerTransporter
+Download the TransporterServer.exe from https://github.com/budcribar/WebServerTransporter/releases
 
 Start the Transporter server and specify a port as follows
 ```
