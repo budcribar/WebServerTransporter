@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "razor", "razor.csproj", "{619FEC63-DD28-4D7B-85E3-031AE760EB92}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebServerTransporter", "..\..\..\WebServerTransporter\WebServerTransporter.csproj", "{A10142C3-797C-4699-BA26-36C55D4D786B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{619FEC63-DD28-4D7B-85E3-031AE760EB92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{619FEC63-DD28-4D7B-85E3-031AE760EB92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{619FEC63-DD28-4D7B-85E3-031AE760EB92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{619FEC63-DD28-4D7B-85E3-031AE760EB92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A10142C3-797C-4699-BA26-36C55D4D786B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A10142C3-797C-4699-BA26-36C55D4D786B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A10142C3-797C-4699-BA26-36C55D4D786B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A10142C3-797C-4699-BA26-36C55D4D786B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {11EDE7BE-C353-47CC-B352-2C9E6DB63E66}
+	EndGlobalSection
+EndGlobal

@@ -68,7 +68,11 @@ Start the razor sample server
 dotnet run
 ```
 
-Now open a web browser using the URL of the transporter (http://localhost:53343)
+Now open a web browser using the URL of the transporter (http://localhost:53343) and try it out.
+At this point you can host the TransporterServer.exe in the public cloud and have access to your Private Server !
 
 # Limitations
 Most of the basic functions of the Kestrel web server are supported. However, there a limitations such as Cookie Authentication that is not yet supported
+
+# Problems
+Contact budcribar@msn.com for problems or suggestions.
