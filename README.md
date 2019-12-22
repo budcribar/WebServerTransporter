@@ -75,4 +75,5 @@ At this point you can host the TransporterServer.exe in the public cloud and hav
 Most of the basic functions of the Kestrel web server are supported. However, there a limitations such as Cookie Authentication that is not yet supported
 
 # Problems
-Contact budcribar@msn.com for problems or suggestions.
+Please open a bug or feature request here: https://github.com/budcribar/WebServerTransporter/issues/new/choose
+
