@@ -52,5 +52,9 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="releases\" />
+  </ItemGroup>
 
 </Project>
