@@ -17,11 +17,11 @@ Create a razor sample web site
 dotnet new razor
 ```
 
-Add the reference to the nuget package to the razor.csproj file 
+Add the reference to the nuget package in the razor.csproj file 
 
 ```
  <ItemGroup>
-    <PackageReference Include="PeakSWC.WebServerTransporter" Version="0.0.5-pre" />
+    <PackageReference Include="PeakSWC.WebServerTransporter" Version="0.0.6-pre" />
   </ItemGroup>
 ```
 
@@ -56,9 +56,9 @@ Finally, insert "app.UseWebServerTransporter();" into the Configure method as fo
             app.UseHttpsRedirection();
             app.UseWebServerTransporter();
 ```
-Download the Transporter.exe
+Download the TransporterServer.exe from https://github.com/budcribar/WebServerTransporter
 
-Start the Transporter server
+Start the Transporter server and specify a port as follows
 ```
 ./Transporter.exe http://localhost:53343
 ```
