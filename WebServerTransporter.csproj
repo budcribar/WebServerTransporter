@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <Description>This package will transport a .net core web server outside of the firewall so that external users can access information that is derrived from protected internal resources.</Description>
+    <Copyright>Peak Software Consulting, LLC</Copyright>
+    <NeutralLanguage>en</NeutralLanguage>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <IsPackable>true</IsPackable>
+    <StartupObject />
+    <version>0.0.6-pre</version>
+    <PackageIcon>favicon-32x32.png</PackageIcon>
+    <PackageIconUrl />
+    <RootNamespace>PeaskSWC.WebServerTransporter</RootNamespace>
+    <PackageId>PeakSWC.WebServerTransporter</PackageId>
+    <Authors>Bud Cribar</Authors>
+    <Company>Peak Software Consulting, LLC</Company>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/budcribar/webservertransporter</RepositoryUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+   
+   
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)'=='Debug'">
+    <PackageReference Include="OpenTelemetry" Version="0.2.0-alpha.100" />
+    <PackageReference Include="OpenTelemetry.Collector.AspNetCore" Version="0.2.0-alpha.100" />
+    <PackageReference Include="OpenTelemetry.Exporter.Zipkin" Version="0.2.0-alpha.100" />
+    <PackageReference Include="OpenTelemetry.Hosting" Version="0.2.0-alpha.100" />
+
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="..\Transporter\test\PrivateServer\wwwroot\assets\favicon-32x32.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
