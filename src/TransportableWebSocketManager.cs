@@ -21,7 +21,7 @@ namespace PeakSWC.WebServerTransporter
             this.ServerUri = serverUri;
         }
 
-        public bool IsWebSocketRequest => Context.Request.Headers.ContainsKey("IsWebSocketRequest") && bool.Parse(Context.Request.Headers["IsWebSocketRequest"]); 
+        public bool IsWebSocketRequest => Context.Request.HttpContext.WebSockets.IsWebSocketRequest || (Context.Request.Headers.ContainsKey("IsWebSocketRequest") && bool.Parse(Context.Request.Headers["IsWebSocketRequest"])); 
 
         public IList<string> WebSocketRequestedProtocols => Context.WebSockets.WebSocketRequestedProtocols;
 

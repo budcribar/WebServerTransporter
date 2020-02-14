@@ -66,8 +66,8 @@ namespace PeakSWC.WebServerTransporter
             connection.HubConnection = new HubConnectionBuilder().WithUrl(connection.HubUrl).WithAutomaticReconnect().Build();
 
             connection.HubConnection.On<Guid, SocketPacket>(Strings.TransporterToServer, (guid, packet) => {
-
-                connectionDictionary[guid].SocketWriter.Post(packet);
+                if (connectionDictionary.ContainsKey(guid)) // TODO: WTF?
+                    connectionDictionary[guid].SocketWriter.Post(packet);
             });
 
         }
