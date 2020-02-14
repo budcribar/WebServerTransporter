@@ -34,27 +34,27 @@ Insert "AddWebServerTransporter" to ConfigureServices as follows:
 
 ```
  public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddRazorPages();
-            services.AddWebServerTransporter(new Uri("http://localhost:53343"));
-        }
+ {
+     services.AddRazorPages();
+     services.AddWebServerTransporter(new Uri("http://localhost:53343"));
+ }
 ```
 
 Finally, insert "app.UseWebServerTransporter();" into the Configure method as follows:
 ```
  if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+ {
+     app.UseDeveloperExceptionPage();
+ }
+ else
+ {
+     app.UseExceptionHandler("/Error");
+     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+     app.UseHsts();
+ }
 
-            app.UseHttpsRedirection();
-            app.UseWebServerTransporter();
+ app.UseHttpsRedirection();
+ app.UseWebServerTransporter();
 ```
 Download the TransporterServer.exe from https://github.com/budcribar/WebServerTransporter/releases
 
