@@ -1,4 +1,9 @@
-<h1>Hello, world!</h1>
-<button class="btn btn-primary" (click)="monitorTemperature()">Monitor Temperature</button>
+<h1>Monitor Temperature</h1>
+<button class="btn btn-primary" (click)="monitorTemperature()">{{state}}</button>
 
-{{temp}}
+<button class="btn btn-primary btn-space" (click)="setTemperature()">{{oven}}</button>
+
+<div class="btn-space">
+  {{temp}}
+
+</div>

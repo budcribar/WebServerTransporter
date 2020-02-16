@@ -13,6 +13,7 @@ using System.Diagnostics.PerformanceData;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Management;
 
 namespace CPUTempMonitor
 {
@@ -108,16 +109,31 @@ namespace CPUTempMonitor
         }
 
         #region Temperature
+
+        private double ReadWMITemp ()
+        {
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher(@"root\WMI", "SELECT * FROM MSAcpi_ThermalZoneTemperature");
+            foreach (ManagementObject obj in searcher.Get())
+            {
+                Double temp = Convert.ToDouble(obj["CurrentTemperature"].ToString());
+                temp = (temp - 2732) / 10.0;
+                return temp;
+            }
+            return 0;
+        }
+
         private async Task SendCPUTemp(HttpTransporterContext _, IWebSocket webSocket)
         {
-            PerformanceCounterCategory category = PerformanceCounterCategory.GetCategories().First(c => c.CategoryName == "Thermal Zone Information");
-            PerformanceCounter tempCounter = new PerformanceCounter("Thermal Zone Information", "Temperature", category.GetInstanceNames().First());
+            //PerformanceCounterCategory category = PerformanceCounterCategory.GetCategories().First(c => c.CategoryName == "Thermal Zone Information");
+            //PerformanceCounter tempCounter = new PerformanceCounter("Thermal Zone Information", "Temperature", category.GetInstanceNames().Last());
             
             while (true)
             {
-                double temperature = (tempCounter.NextValue() - 273.15f);
-                var r = new Random();
-                string temp = (temperature + r.NextDouble()).ToString();
+                //double temperature = (tempCounter.NextValue() - 273.15f);
+                //var r = new Random();
+                //string temp = (temperature + r.NextDouble()).ToString();
+                //string temp = temperature.ToString();
+                string temp = ReadWMITemp().ToString();
 
                 // -273.15 is the conversion from degrees Kelvin to degrees Celsius
 
