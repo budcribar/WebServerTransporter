@@ -21,7 +21,7 @@ Add the reference to the nuget package in the razor.csproj file
 
 ```
  <ItemGroup>
-    <PackageReference Include="PeakSWC.WebServerTransporter" Version="0.0.6-pre" />
+    <PackageReference Include="PeakSWC.WebServerTransporter" Version="0.0.7-pre" />
   </ItemGroup>
 ```
 

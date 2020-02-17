@@ -12,7 +12,7 @@
     <OutputType>Library</OutputType>
     <IsPackable>true</IsPackable>
     <StartupObject />
-    <version>0.0.6-pre</version>
+    <version>0.0.7-pre</version>
     <PackageIcon>favicon-32x32.png</PackageIcon>
     <PackageIconUrl />
     <RootNamespace>PeaskSWC.WebServerTransporter</RootNamespace>
@@ -46,10 +46,10 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
-    <PackageReference Include="OpenTelemetry" Version="0.2.0-alpha.100" />
-    <PackageReference Include="OpenTelemetry.Collector.AspNetCore" Version="0.2.0-alpha.100" />
-    <PackageReference Include="OpenTelemetry.Exporter.Zipkin" Version="0.2.0-alpha.100" />
-    <PackageReference Include="OpenTelemetry.Hosting" Version="0.2.0-alpha.100" />
+    <PackageReference Include="OpenTelemetry" Version="0.2.0-alpha.179" />
+    <PackageReference Include="OpenTelemetry.Collector.AspNetCore" Version="0.2.0-alpha.179" />
+    <PackageReference Include="OpenTelemetry.Exporter.Zipkin" Version="0.2.0-alpha.179" />
+    <PackageReference Include="OpenTelemetry.Hosting" Version="0.2.0-alpha.179" />
 
   </ItemGroup>
   

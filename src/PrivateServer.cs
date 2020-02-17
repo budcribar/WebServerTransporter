@@ -167,7 +167,7 @@ namespace PeakSWC.WebServerTransporter
         }
 
 
-#if DEBUG
+#if ZIPKIN
         private async Task WebRequest(HttpRequestPacket packet, TextMapCarrier carrier, Func<Stream,Task> WriteBody)
         {
             var tracer = TracerFactoryBase.Default.GetTracer("Transporter");
@@ -179,7 +179,7 @@ namespace PeakSWC.WebServerTransporter
             HttpResponsePacket? response = null;
             var errorMessage = "Internal Server Error";
 
-#if DEBUG
+#if ZIPKIN
             using (tracer.StartActiveSpan("Transporter -> Server", context, SpanKind.Server, out _))
 #endif
             {
@@ -259,7 +259,7 @@ namespace PeakSWC.WebServerTransporter
                 response = new HttpResponsePacket(id: packet.Id, content: ImmutableArray.Create<byte>(Encoding.ASCII.GetBytes(errorMessage)), contentLength: errorMessage.Length, statusCode: HttpStatusCode.InternalServerError);
             }
 
-#if DEBUG
+#if ZIPKIN
             using (tracer.StartActiveSpan("Server -> Transporter Response", context, SpanKind.Server, out var _))
 #endif
             {
@@ -269,27 +269,31 @@ namespace PeakSWC.WebServerTransporter
             }
         }
 
-        public async Task StartAsync(CancellationToken cancellationToken)
+        public Task StartAsync(CancellationToken cancellationToken)
         {
             if (connection.HubConnection == null)
                 throw new NullReferenceException(nameof(connection.HubConnection));
 
-            // Loop is here to wait until the server is running
-            while (true)
+            Task.Run(async () =>
             {
-                try
+                // Loop is here to wait until the server is running
+                while (true)
                 {
-                    await connection.HubConnection.StartAsync(cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        await connection.HubConnection.StartAsync(cancellationToken).ConfigureAwait(false);
 
-                    break;
-                }
-               
-                catch(HttpRequestException)
-                {
-                    await Task.Delay(1000).ConfigureAwait(false);
-                }
-            }
+                        break;
+                    }
 
+                    catch (HttpRequestException)
+                    {
+                        await Task.Delay(1000).ConfigureAwait(false);
+                    }
+                }
+            });
+
+            return Task.CompletedTask;
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

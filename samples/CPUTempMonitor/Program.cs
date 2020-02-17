@@ -13,7 +13,10 @@ namespace CPUTempMonitor
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            if (args.Count() == 0)
+                Console.WriteLine("Missing URL specification i.e. http://localhost:5000");
+            else
+                CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

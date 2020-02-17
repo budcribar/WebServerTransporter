@@ -16,7 +16,7 @@ namespace PeakSWC.WebServerTransporter
 {
     public static class StaticMethods
     {
-#if DEBUG
+#if ZIPKIN
         public static IServiceCollection AddZipkin(this IServiceCollection services, string serviceName)
         {
             return services.AddOpenTelemetry(() =>
@@ -62,7 +62,7 @@ namespace PeakSWC.WebServerTransporter
             }
         }
 
-#if DEBUG
+#if ZIPKIN
         public static SpanContext Context(this ITracer tracer, TextMapCarrier carrier)
         {
             if (tracer == null)
@@ -90,7 +90,7 @@ namespace PeakSWC.WebServerTransporter
             return tracer.TextFormat.Extract<Dictionary<string, IEnumerable<string>>>(carrierMap, GetCarrierKeyValue);
         }
 #endif
-#region Unused
+        #region Unused
         public static IEnumerable<string> SplitByLength(this string str, int maxLength)
         {
             for (int index = 0; index < str.Length; index += maxLength)

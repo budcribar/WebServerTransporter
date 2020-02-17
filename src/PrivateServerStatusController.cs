@@ -95,7 +95,8 @@ namespace PeakSWC.WebServerTransporter
             else
             {
                 context.Response.Headers.Add(Strings.RefreshHeader, "1");
-                await next(context).ConfigureAwait(false);
+                //await next(context).ConfigureAwait(false);
+
                 await context.Response.WriteAsync(BuildFade).ConfigureAwait(false);
             }
         }

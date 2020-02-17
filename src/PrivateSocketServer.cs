@@ -73,25 +73,30 @@ namespace PeakSWC.WebServerTransporter
         }
 
 
-        public async Task StartAsync(CancellationToken cancellationToken)
+        public  Task StartAsync(CancellationToken cancellationToken)
         {
             if (connection.HubConnection == null)
                 throw new NullReferenceException(nameof(connection.HubConnection));
 
-            while (true)
+            Task.Run(async () =>
             {
-                try
+                while (true)
                 {
-                    await connection.HubConnection.StartAsync().ConfigureAwait(false);
+                    try
+                    {
+                        await connection.HubConnection.StartAsync().ConfigureAwait(false);
 
-                    break;
-                }
-                catch (HttpRequestException)
-                {
-                    Thread.Sleep(1000);
-                }
+                        break;
+                    }
+                    catch (HttpRequestException)
+                    {
+                        Thread.Sleep(1000);
+                    }
 
-            }
+                }
+            });
+
+            return Task.CompletedTask;
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

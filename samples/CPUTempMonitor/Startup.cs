@@ -110,6 +110,11 @@ namespace CPUTempMonitor
 
         #region Temperature
 
+        //private double BatteryStatus()
+        //{
+        //    BatteryChargeStatus
+        //}
+
         private double ReadWMITemp ()
         {
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(@"root\WMI", "SELECT * FROM MSAcpi_ThermalZoneTemperature");
@@ -117,6 +122,18 @@ namespace CPUTempMonitor
             {
                 Double temp = Convert.ToDouble(obj["CurrentTemperature"].ToString());
                 temp = (temp - 2732) / 10.0;
+                return temp;
+            }
+            return 0;
+        }
+
+        private double ReadWMIBattery()
+        {
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Battery");
+            foreach (ManagementObject obj in searcher.Get())
+            {
+                Double temp = Convert.ToDouble(obj["EstimatedChargeRemaining"].ToString());
+                
                 return temp;
             }
             return 0;
@@ -133,7 +150,7 @@ namespace CPUTempMonitor
                 //var r = new Random();
                 //string temp = (temperature + r.NextDouble()).ToString();
                 //string temp = temperature.ToString();
-                string temp = ReadWMITemp().ToString();
+                string temp = ReadWMIBattery().ToString();
 
                 // -273.15 is the conversion from degrees Kelvin to degrees Celsius
 
