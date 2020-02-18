@@ -12,67 +12,63 @@ namespace CPUTempMonitor.Controllers
     [Route("[controller]")]
     public class CPUTempMonitorController : ControllerBase
     {
-        private static List<Task> stressTask = new List<Task>();
-        private static List<CancellationTokenSource> tokenSource = new List<CancellationTokenSource>();
-
-
-        public CPUTempMonitorController()
+        private TaskState taskState;
+      
+        public CPUTempMonitorController(TaskState taskState)
         {
+            this.taskState = taskState;
         }
 
-        //[HttpPost]
-        //public void Stressor ([FromBody]int heat)
-
-        [HttpGet("stressor/{heat}")]
-        public void Stressor(bool heat)
+        [HttpPost("stressor/{heat}")]
+        public void Stressor (bool heat)
         {
             if (heat)
             {
-                if (stressTask.Count() == 0)
+                if (taskState.taskList.Count() == 0)
                 {
 
                     for (int i = 0; i < Environment.ProcessorCount; i++)
                     {
-                        tokenSource.Add(new CancellationTokenSource());
+                        taskState.tokenSourceList.Add(new CancellationTokenSource());
 
                         // Prevent closing over loop variable
                         var j = i;
-                        stressTask.Add(Task.Run(() =>
+                        taskState.taskList.Add(Task.Run(() =>
                         {
                             try
                             {
                                 while (true)
                                 {
-                                    tokenSource[j].Token.ThrowIfCancellationRequested();
+                                    taskState.tokenSourceList[j].Token.ThrowIfCancellationRequested();
                                     double s = Math.PI;
                                     double t = Math.Atan(s);
                                 }
                             }
                             catch (Exception) { }
-                        }, tokenSource[j].Token)
+                        }, taskState.tokenSourceList[j].Token)
                         );
                     }
                 }
             }
             else
             {
-                if (stressTask.Count() > 0)
+                if (taskState.taskList.Count() > 0)
                 {
-                    for (int i = 0; i < Environment.ProcessorCount; i++)                 
-                        tokenSource[i].Cancel();
+                    for (int i = 0; i < Environment.ProcessorCount; i++)
+                        taskState.tokenSourceList[i].Cancel();
 
                     try
                     {
-                        Task.WaitAll(stressTask.ToArray());
+                        Task.WaitAll(taskState.taskList.ToArray());
                     }
                     finally
                     {
-                        for (int i = 0; i < tokenSource.Count(); i++)                          
+                        for (int i = 0; i < taskState.tokenSourceList.Count(); i++)                          
                         {
-                            tokenSource[i].Dispose();                         
+                            taskState.tokenSourceList[i].Dispose();                         
                         }
-                        tokenSource = new List<CancellationTokenSource>();
-                        stressTask = new List<Task>();
+                        taskState.tokenSourceList = new List<CancellationTokenSource>();
+                        taskState.taskList = new List<Task>();
                     }
                    
                 }

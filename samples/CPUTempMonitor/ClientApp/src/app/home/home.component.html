@@ -1,9 +1,7 @@
-<h1>Monitor Temperature</h1>
+<h1>Monitor Battery</h1>
 <button class="btn btn-primary" (click)="monitorTemperature()">{{state}}</button>
 
 <button class="btn btn-primary btn-space" (click)="setTemperature()">{{oven}}</button>
 
-<div class="btn-space">
-  {{temp}}
+<app-battery-chart [batteryCharge]="chargeStatusToPlot"></app-battery-chart>
 
-</div>

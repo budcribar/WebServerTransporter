@@ -14,9 +14,17 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Management;
+using CPUTempMonitor.Controllers;
+using Newtonsoft.Json;
 
 namespace CPUTempMonitor
 {
+    public class BatteryCharge
+    {
+        public BatteryCharge (double level, DateTime date) { ChargeLevel = level; Date = date; }
+        public double ChargeLevel { get; }
+        public DateTime Date { get; }
+    }
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -35,6 +43,8 @@ namespace CPUTempMonitor
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddSingleton<TaskState>();
 
             services.AddWebServerTransporter(new Uri("http://localhost:53343"));
         }
@@ -127,16 +137,17 @@ namespace CPUTempMonitor
             return 0;
         }
 
-        private double ReadWMIBattery()
+        private BatteryCharge ReadWMIBattery()
         {
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Battery");
             foreach (ManagementObject obj in searcher.Get())
             {
                 Double temp = Convert.ToDouble(obj["EstimatedChargeRemaining"].ToString());
-                
-                return temp;
+
+                return new BatteryCharge(temp, DateTime.Now);
+
             }
-            return 0;
+            return new BatteryCharge(-1, DateTime.Now);
         }
 
         private async Task SendCPUTemp(HttpTransporterContext _, IWebSocket webSocket)
@@ -150,7 +161,7 @@ namespace CPUTempMonitor
                 //var r = new Random();
                 //string temp = (temperature + r.NextDouble()).ToString();
                 //string temp = temperature.ToString();
-                string temp = ReadWMIBattery().ToString();
+                string temp = JsonConvert.SerializeObject( ReadWMIBattery());
 
                 // -273.15 is the conversion from degrees Kelvin to degrees Celsius
 
@@ -161,7 +172,7 @@ namespace CPUTempMonitor
                 Console.WriteLine("Temperature: {0} \u00B0C", temp);
                 await webSocket.SendAsync(new ArraySegment<byte>(data, 0, data.Length), WebSocketMessageType.Text, endOfMessage:true, CancellationToken.None);
 
-                Thread.Sleep(1000);
+                Thread.Sleep(10000);
             }
         }
         #endregion
