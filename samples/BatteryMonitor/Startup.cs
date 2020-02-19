@@ -14,10 +14,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Management;
-using CPUTempMonitor.Controllers;
+using BatteryMonitor.Controllers;
 using Newtonsoft.Json;
 
-namespace CPUTempMonitor
+namespace BatteryMonitor
 {
     public class BatteryCharge
     {
@@ -75,7 +75,7 @@ namespace CPUTempMonitor
                     if (context.WebSockets.IsWebSocketRequest)
                     {
                         IWebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                        await SendCPUTemp(context, webSocket);
+                        await SendBatteryStatus(context, webSocket);
                     }
                     else
                     {
@@ -118,24 +118,7 @@ namespace CPUTempMonitor
             });
         }
 
-        #region Temperature
-
-        //private double BatteryStatus()
-        //{
-        //    BatteryChargeStatus
-        //}
-
-        private double ReadWMITemp ()
-        {
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(@"root\WMI", "SELECT * FROM MSAcpi_ThermalZoneTemperature");
-            foreach (ManagementObject obj in searcher.Get())
-            {
-                Double temp = Convert.ToDouble(obj["CurrentTemperature"].ToString());
-                temp = (temp - 2732) / 10.0;
-                return temp;
-            }
-            return 0;
-        }
+        #region Battery Charge
 
         private BatteryCharge ReadWMIBattery()
         {
@@ -150,26 +133,14 @@ namespace CPUTempMonitor
             return new BatteryCharge(-1, DateTime.Now);
         }
 
-        private async Task SendCPUTemp(HttpTransporterContext _, IWebSocket webSocket)
+        private async Task SendBatteryStatus(HttpTransporterContext _, IWebSocket webSocket)
         {
-            //PerformanceCounterCategory category = PerformanceCounterCategory.GetCategories().First(c => c.CategoryName == "Thermal Zone Information");
-            //PerformanceCounter tempCounter = new PerformanceCounter("Thermal Zone Information", "Temperature", category.GetInstanceNames().Last());
-            
             while (true)
             {
-                //double temperature = (tempCounter.NextValue() - 273.15f);
-                //var r = new Random();
-                //string temp = (temperature + r.NextDouble()).ToString();
-                //string temp = temperature.ToString();
-                string temp = JsonConvert.SerializeObject( ReadWMIBattery());
+                var status = ReadWMIBattery();
+                byte[] data = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(status));
 
-                // -273.15 is the conversion from degrees Kelvin to degrees Celsius
-
-               
-
-                byte[] data = Encoding.ASCII.GetBytes(temp);
-
-                Console.WriteLine("Temperature: {0} \u00B0C", temp);
+                Console.WriteLine("Battery Status: {0}", status.ChargeLevel);
                 await webSocket.SendAsync(new ArraySegment<byte>(data, 0, data.Length), WebSocketMessageType.Text, endOfMessage:true, CancellationToken.None);
 
                 Thread.Sleep(10000);

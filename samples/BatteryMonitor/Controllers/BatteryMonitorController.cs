@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BatteryMonitor.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace CPUTempMonitor.Controllers
+namespace BatteryMonitor.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CPUTempMonitorController : ControllerBase
+    public class BatteryMonitorController : ControllerBase
     {
         private TaskState taskState;
       
-        public CPUTempMonitorController(TaskState taskState)
+        public BatteryMonitorController(TaskState taskState)
         {
             this.taskState = taskState;
         }

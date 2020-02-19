@@ -19,9 +19,9 @@ export class HomeComponent {
 
   public setTemperature() {
     if (this.oven === "Bake") 
-      this.http.post(`${window.location.origin}/cputempmonitor/stressor/true`, null).subscribe(() => this.oven = "Cool");
+      this.http.post(`${window.location.origin}/batterymonitor/stressor/true`, null).subscribe(() => this.oven = "Cool");
     else 
-      this.http.post(`${window.location.origin}/cputempmonitor/stressor/false`, null).subscribe(() => this.oven = "Bake");
+      this.http.post(`${window.location.origin}/batterymonitor/stressor/false`, null).subscribe(() => this.oven = "Bake");
   }
 
   set ChargeStatus(status: BatteryCharge[]) {

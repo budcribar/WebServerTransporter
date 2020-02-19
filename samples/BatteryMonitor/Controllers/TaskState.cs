@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CPUTempMonitor.Controllers
+namespace BatteryMonitor.Controllers
 {
     public class TaskState
     {
