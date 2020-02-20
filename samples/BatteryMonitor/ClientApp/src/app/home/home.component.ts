@@ -9,11 +9,12 @@ import { BatteryCharge } from '../BatteryCharge';
   templateUrl: './home.component.html',
 })
 export class HomeComponent {
-  //public temp = 0.0;
   public state = "Start";
   public oven = "Bake";
   public chargeStatus: BatteryCharge[] = [];
   public chargeStatusToPlot: BatteryCharge[];
+
+  private webSocket: WebSocketSubject<BatteryCharge> = null;
 
   constructor(private http: HttpClient) { }
 
@@ -29,21 +30,27 @@ export class HomeComponent {
     this.chargeStatusToPlot = this.chargeStatus.slice(0, 100);
   }
 
-  public monitorTemperature() {
-    var scheme = `${window.location.origin}`.replace('http', 'ws');
+  public monitorCharge() {
+    if (this.state === "Start") {
+      var scheme = `${window.location.origin}`.replace('http', 'ws');
 
-    var myWebSocket = webSocket(`${scheme}/ws`);
+      this.webSocket = webSocket<BatteryCharge>(`${scheme}/ws`);
+
+      this.webSocket.asObservable().subscribe((t: BatteryCharge) => {
+        if (this.chargeStatus.length > 0)
+          this.ChargeStatus = [t].concat(this.chargeStatus);
+        else
+          this.ChargeStatus = [t];
+      });
+
+      this.state = "Stop"
+    }
+    else {
+      this.webSocket.complete();
+      this.ChargeStatus = [];
+      this.state = "Start"
+    }
     
-    myWebSocket.asObservable().subscribe((t: BatteryCharge) => {
-      if (this.chargeStatus.length > 0)
-        this.ChargeStatus = [t].concat(this.chargeStatus);
-      else
-        this.ChargeStatus = [t];
-    });
-      
-
-    if (this.state === "Start") this.state = "Stop"
-    else this.state = "Start"
   }
 
   
