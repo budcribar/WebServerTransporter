@@ -15,7 +15,7 @@ using System.Threading.Tasks.Dataflow;
 
 namespace PeakSWC.WebServerTransporter
 {
-    public class TransporterWebSocket : IWebSocket
+    public class TransporterWebSocket : IWebSocket, IDisposable
     {
         public HttpContext Context { get; set; }
 
@@ -76,7 +76,8 @@ namespace PeakSWC.WebServerTransporter
 
             // TODO
             Contract.Assert(buffer.Count >= socketPacket.Count);
-            socketPacket.Data.AsSpan().CopyTo(buffer.AsSpan());
+            socketPacket.Data.AsSpan().Slice(0, socketPacket.Count).CopyTo(buffer);
+            //socketPacket.Data.AsSpan().CopyTo(buffer.AsSpan());
 
             return new WebSocketReceiveResult(socketPacket.Count, socketPacket.MessageType, socketPacket.EndOfMessage, socketPacket.CloseStatus, socketPacket.CloseStatusDescription);
         }

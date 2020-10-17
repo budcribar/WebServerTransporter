@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PeakSWC.WebServerTransporter
 {
-    public interface IWebSocket
+    public interface IWebSocket : IDisposable
     {
         public WebSocketCloseStatus? CloseStatus { get; }
 

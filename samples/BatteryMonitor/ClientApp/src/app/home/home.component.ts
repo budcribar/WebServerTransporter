@@ -41,6 +41,8 @@ export class HomeComponent {
           this.ChargeStatus = [t].concat(this.chargeStatus);
         else
           this.ChargeStatus = [t];
+
+        this.webSocket.next(t);
       });
 
       this.state = "Stop"

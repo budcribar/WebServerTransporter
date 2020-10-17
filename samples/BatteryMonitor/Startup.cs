@@ -74,8 +74,8 @@ namespace BatteryMonitor
 
                     if (context.WebSockets.IsWebSocketRequest)
                     {
-                        IWebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                        await SendBatteryStatus(context, webSocket);
+                        using (IWebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync())
+                            await SendBatteryStatus(context, webSocket);
                     }
                     else
                     {
@@ -143,7 +143,13 @@ namespace BatteryMonitor
                 Console.WriteLine("Battery Status: {0}", status.ChargeLevel);
                 await webSocket.SendAsync(new ArraySegment<byte>(data, 0, data.Length), WebSocketMessageType.Text, endOfMessage:true, CancellationToken.None);
 
-                Thread.Sleep(10000);
+                try
+                {
+                    await webSocket.ReceiveAsync(data, CancellationToken.None);
+                }
+                catch (WebSocketException) { break; }        
+
+                Thread.Sleep(1000);
             }
         }
         #endregion
